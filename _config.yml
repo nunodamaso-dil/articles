@@ -1,1 +1,18 @@
 theme: jekyll-theme-slate
+
+# Site wide configuration
+
+title: Articles
+locale: en_US
+logo: images/dil.png
+
+# Enter the following platform usernames if you would like for them to appear on your site.
+owner:
+  name: Nuno Dâmaso
+  avatar: images/bio-photo.jpg
+  bio: ""
+  email: nuno.damaso@doitlean.com
+  # Do not include the @ symbol in your Twitter username
+  twitter: @NunoDamaso
+  linkedin: https://www.linkedin.com/in/nunosdamaso/
+  github: nunodamaso-dil
