@@ -1,10 +1,3 @@
----
-layout: page
-title: Articles
-tags: [Outsystems, Low-code, DoiT Lean]
-category: blog
----
-
 # Articles
 <br />
   
