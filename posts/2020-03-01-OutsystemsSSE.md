@@ -1,1 +1,1 @@
-## <- [Back](/articles/) 
+## Server Sent Events with Outsystems
