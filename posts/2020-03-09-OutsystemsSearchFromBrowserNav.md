@@ -1,4 +1,4 @@
-## <- [Back](../articles/) 
+## <- [Back](/articles/) 
 
 
 I thought I'd share a tiny trick for those starting out with Outsystems and coming from other techs, where searching for issues/docs was an exercise of ctrl+t+stackoverflow+tab(or simillar) and search away. I actually mentioned this on a usability session with Outsystems where I found myself kind of lost between bookmarks and search engines trying to look up something.
