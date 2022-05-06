@@ -18,4 +18,10 @@
 
 
 <br />
-Nuno Dâmaso, DoiTLean 2021 <img src="images/bio-photo.jpg" width="20" height="20" />  
+Nuno Dâmaso <img src="images/bio-photo.jpg" width="20" height="20" />
+
+Do iT Lean [<img src="https://www.doitlean.com/images/Logos/logo.svg" width="20" height="20" />](https:/7https://www.doitlean.com/)
+
+
+
+
