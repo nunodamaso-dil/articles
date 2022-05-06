@@ -1,5 +1,4 @@
-## Search Outsystems from Browser's navbar
-
+# Search Outsystems from Browser's navbar
 
 I thought I'd share a tiny trick for those starting out with Outsystems and coming from other techs, where searching for issues/docs was an exercise of ctrl+t+stackoverflow+tab(or simillar) and search away. I actually mentioned this on a usability session with Outsystems where I found myself kind of lost between bookmarks and search engines trying to look up something.
 
@@ -11,7 +10,7 @@ On to it (*the following is suitable for chromium engines, but probably similar 
 - Fill in the following:
 Search Engine: Outsystems
 Keyword: outsystems.com (or just outsystems)
-URL: https://www.outsystems.com/Community/st_search.aspx?q=%s
+URL: <https://www.outsystems.com/Community/st_search.aspx?q=%s>
 
 That's it!
 

@@ -1,1 +1,1 @@
-## Server Sent Events with Outsystems
+# Server Sent Events with Outsystems

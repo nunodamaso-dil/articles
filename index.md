@@ -1,27 +1,18 @@
+# Outsystems
 
-## Outsystems
+- ## [Search Outsystems from Browser's navbar](./posts/2020-03-09-OutsystemsSearchFromBrowserNav.md)
 
-
-- ### [Search Outsystems from Browser's navbar](./posts/2020-03-09-OutsystemsSearchFromBrowserNav.md)
-
-- ### [Server Sent Events with Outsystems](./posts/2020-03-01-OutsystemsSSE.md)
+- ## [Server Sent Events with Outsystems](./posts/2020-03-01-OutsystemsSSE.md)
 
 ## SDD 2022 Conference
 
-- ### [Tuesday](./posts/2022-05-17-SDD.md)
+- ## [Tuesday](./posts/2022-05-17-SDD.md)
 
+- ## [Wednesday](./posts/2022-05-18-SDD.md)
 
-- ### [Wednesday](./posts/2022-05-18-SDD.md)
-
-
-- ### [Thursday](./posts/2022-05-19-SDD.md)
-
-
-<br />
+- ## [Thursday](./posts/2022-05-19-SDD.md)
+  
+---
 Nuno Dâmaso <img src="images/bio-photo.jpg" width="20" height="20" />
 
 Do iT Lean [<img src="https://www.doitlean.com/images/Logos/logo.svg" width="20" height="20" />](https://www.doitlean.com/)
-
-
-
-
