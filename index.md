@@ -8,6 +8,8 @@
 
 ## SDD 2022 Conference
 
+- ### [Day 0](./posts/2022-05-16-SDD.md)
+
 - ### [Tuesday](./posts/2022-05-17-SDD.md)
 
 - ### [Wednesday](./posts/2022-05-18-SDD.md)
