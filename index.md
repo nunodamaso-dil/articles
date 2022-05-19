@@ -1,5 +1,9 @@
 # Blog
 
+## Sync iT
+
+- ### [On Speeding up Sync iT](./posts/2023-02-01-SpeedingUpSynciT.md)
+
 ## Outsystems
 
 - ### [Search Outsystems from Browser's navbar](./posts/2020-03-09-OutsystemsSearchFromBrowserNav.md)
