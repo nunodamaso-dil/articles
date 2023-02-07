@@ -4,8 +4,9 @@
 
 Since the first conversations I had with the SynciT Team, the ghost of parallelism was in the air.  
 How fast would it be?  Could we come up with a stable model to predict the migration order?  Did Outsystems provide enough parallel mechanisms to pull it off?  
+Binaries were also a pain during long migrations, taking a long time to transfer and not really moving torwards the goal of having data properly migrated.
 Then there was also the heart of SynciT engine - updating and matching all the migrated auto number foreign keys - often the culprit of timeouts and slow migrations.  
-Both these topics needed to be addressed to speed up SynciT.
+All these topics needed to be addressed to speed up SynciT.
 
 -----
 
@@ -44,10 +45,23 @@ After that, the processes themselves are responsible to re-launch the migration 
 
 ## In memory FK updates
 
+SynciT's approach to match autonumbers between 2 environments is a simple one - insert records, retrieve the ids, store them in a mapping table to map with those from source.
+After that, whenever an entity needs to reference a fk, it fetches the new FK Id from said mapping table.
+
+The opportunity to improvement here comes from the matching flow - SynciT used an approach often mentioned in Outsystems forums and blogs, of creating temporary tables to update incoming entity fk records.  
+While there's nothing wrong with that, it implies a lot of disk reads and writes because temporary tables are tables after all.  
+Furthermore, Oracle's Outsystems user has no permissions to create temporary tables, so that was no no anyways for Oracle.  
+
+Moving the whole thing to memory involved some caching and taking advantage of Outsystems extensions singleton patterns, but the results factor on 10x faster and above for any given entity.
+
 -----
 
 ## Setting binaries aside
 
+The idea here was pretty simple. Binary files are required to transfer for a completed migration but not required for working data. So we simply moved the binary files to a parallel timer to deal with those, while the main entity migration deals with data and referential integrety.  
+This achieves a ready to work environment before the binaries are all downloaded, speeding up the goal. Once the main entity migration finishes, Users can start working while the binaries are downloading even.
+
 -----
 
 ## How faster then?  
+
