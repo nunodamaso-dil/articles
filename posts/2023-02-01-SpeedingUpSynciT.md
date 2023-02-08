@@ -4,13 +4,13 @@
 
 Since the first conversations I had with the SynciT Team, the ghost of parallelism was in the air.  
 How fast would it be?  Could we come up with a stable model to predict the migration order?  Did Outsystems provide enough parallel mechanisms to pull it off?  
-Binaries were also a pain during long migrations, taking a long time to transfer and not really moving towards the goal of having data properly migrated.
+Binaries were also a pain during long migrations, taking a long time to transfer and not really moving towards the goal of having referential data properly migrated.
 Then there was also the heart of SynciT engine - updating and matching all the migrated auto number foreign keys - often the culprit of timeouts and slow migrations.  
 All these topics needed to be addressed to speed up SynciT.
 
 -----
 
-## Achieving Parallelism
+## Parallelism
 
 ### Directed Graphs
 
