@@ -29,6 +29,8 @@ It is also possible to quickly identify entity silos - see the yellow boxes.
 The downside here is calculating your cyclic references, needed when migrating data, to ensure referential integrity  correctness.  
 **It can be achieved by calculating T^n** and then looking for entries at the identity diagonal. Here we can explicitly see one of them - SalesPerson to itself - Row 4 Column 4.  
 But wait, what about the **Person-SalesPerson-Person**? It is not on the diagonal! To find every cyclic in the graph we need to calculate T^5. Whatever is not 0 on the main diagonal is circular.  
+Here's another example:  
+![Matrice2](../images/SynciTSpeedingUp/Matrice2.png)  
 While the cost to *compute* these matrices will be higher than the depth first algorithm, there is a huge gain when **accessing** this structure at run time versus the graph - it's just a 2d array.
 
 ### Light BPTs
@@ -50,9 +52,11 @@ After that, whenever an entity needs to reference a fk, it fetches the new FK Id
 
 The opportunity to improve here, comes from the matching flow - SynciT used an approach often mentioned in Outsystems forums and blogs, of creating temporary tables to update incoming entity fk records.  
 While there's nothing wrong with that, it implies a lot of disk reads and writes because temporary tables are tables after all.  
-Furthermore, Oracle's Outsystems user has no permissions to create temporary tables, so that was no no anyways for Oracle.  
+Furthermore, Oracle's Outsystems user has no permissions to create temporary tables, so that was a no no anyways for Oracle.  
 
-Moving the whole thing to memory involved some caching and taking advantage of Outsystems extensions singleton patterns, but the results factor on 10x faster and above for any given entity.
+![InMem](../images/SynciTSpeedingUp/InMem.jpg)
+
+Moving the whole thing to memory involved some caching and taking advantage of Outsystems extensions singleton patterns, but the results factor on an observable 10x faster fk updates and above. It can actually be a lot more than that, a disk read/write vs memory factors in the 1000x.
 
 -----
 
@@ -65,3 +69,9 @@ This achieves a ready to work environment before the binaries are all downloaded
 
 ## How fast then?  
 
+-----
+
+## Wrap up  
+
+Often I get asked how to get inspired for some of this stuff - here's an ancient technique envolving pen, paper and liquids. Keep rockin!  
+![technique](../images/SynciTSpeedingUp/technique.jpg)
