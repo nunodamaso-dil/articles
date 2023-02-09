@@ -73,5 +73,6 @@ This achieves a ready to work environment before the binaries are all downloaded
 
 ## Wrap up  
 
-Often I get asked how to get inspired for some of this stuff - here's an ancient technique envolving pen, paper and liquids. Keep rockin!  
+Here's an ancient complex technique that I use to draw some inspiration for some of this stuff - it involves a pencil, paper and liquids.  
+  
 ![technique](../images/SynciTSpeedingUp/technique.jpg)
