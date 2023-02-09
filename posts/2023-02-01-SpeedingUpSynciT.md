@@ -69,6 +69,38 @@ This achieves a ready to work environment before the binaries are all downloaded
 
 ## How fast then?  
 
+Its complicated.  
+
+I will discard mentioning the in-memory fk update buff from above. In pratical terms, if an entity would take 10 seconds to fetch and 10 seconds to migrate, it now takes 10 seconds to fetch and around 1-2s to migrate and that's what we are rolling with. There's more to it, but these gains will already be assumed for what follows.
+
+I will also discard the binary scenarios. These will be migrated aside like previously mentioned, so these gains are also assumed.
+
+### Example 1
+
+![example1](../images/SynciTSpeedingUp/example1.jpg)  
+
+In a sequential fashion, this migration takes 50 seconds.  
+In parallel with 5 available LBTs, it would take around 10 seconds.  
+
+### Lets switch things up a bit. Same 5 entities, now one has 900K records and this one takes 50s. The other 4, 10k and they take 1s
+
+![example2](../images/SynciTSpeedingUp/example2.jpg)  
+
+Sequential - 54s, Parallel - 50s  
+Pfff, not much to be said here, its easy to see why these values are so close.  
+
+### Here's another one
+
+![example3](../images/SynciTSpeedingUp/example3.jpg)  
+
+Sequential will be equal to Parallel
+
+### Other considerations  
+
+The are metal considerations as well. How much ram do the servers have? How many LBPTs are available/feasable to use? Is the Server healthy? All of this needs to be taken into account.  
+
+All and all, for any given random migration I am expecting average speed gains in the 2 to 5x magnitude.
+
 -----
 
 ## Wrap up  
