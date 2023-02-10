@@ -2,8 +2,8 @@
 
 *SynciT is an application data migration tool for Outsystems environments*  
 
-Since the first conversations I had with the SynciT Team, the ghost of parallelism was in the air.  
-How fast would it be?  Could we come up with a stable model to predict the migration order?  Did Outsystems provide enough parallel mechanisms to pull it off?  
+Since the first conversations I had with the SynciT Team, parallelism was in the air.  
+How fast would it be?  Could we come up with a stable model to predict the migration order? Did Outsystems provide enough parallel mechanisms to pull it off?  
 Binaries were also a pain during long migrations, taking a long time to transfer and not really moving towards the goal of having referential data properly migrated.
 Then there was also the heart of SynciT engine - updating and matching all the migrated auto number foreign keys - often the culprit of timeouts and slow migrations.  
 All these topics needed to be addressed to speed up SynciT.
@@ -27,15 +27,15 @@ How cool is that? We end up with a simple 2D array to store our entire relationa
 It is also possible to quickly identify entity silos - see the yellow boxes.  
 
 The downside here is calculating your cyclic references, needed when migrating data, to ensure referential integrity  correctness.  
-**It can be achieved by calculating T^n** and then looking for entries at the identity diagonal. Here we can explicitly see one of them - SalesPerson to itself - Row 4 Column 4.  
-But wait, what about the **Person-SalesPerson-Person**? It is not on the diagonal! To find every cyclic in the graph we need to calculate T^5. Whatever is not 0 on the main diagonal is circular.  
+**It can be achieved by looking for entries on the identity diagonal**. Here we can explicitly see one of them - SalesPerson to itself - Row 4 Column 4.  
+But wait, what about the **Person-SalesPerson-Person**? It is not on the diagonal! To find every cyclic in the graph we need to calculate T^n. Whatever is not 0 on the main diagonal is circular.  
 Here's another example:  
 ![Matrice2](../images/SynciTSpeedingUp/Matrice2.png)  
 While the cost to *compute* these matrices will be higher than the depth first algorithm, there is a huge gain when **accessing** this structure at run time versus the graph - it's just a 2d array.
 
 ### Light BPTs
 
-Outsystems had launched Light BPTs when I joined the SynciT team. While normal BPTs would technically do the job, the speed gains would be marginal, since keeping history records and having callbacks and direct launches slows down the entire thing.  
+Outsystems had launched Light BPTs when I joined the SynciT team. While normal BPTs would technically do the job, the speed gains would be marginal, since keeping history records, callbacks, scheduling, process table entries, direct launches, etc.. slows down the entire thing.  
 Light BPTs are the perfect mechanism but with a catch. A 3 minutes one. You see, fetching data alone for a single batch of records of a single entity can often take as much as 2minutes or more, based on server latency, columns, attribute sizes, and more, nevermind the remainder of the process of updating fks and inserting the records.
 Here's how we setup the parallel migration logic (overly simplified):  
 ![Parallel](../images/SynciTSpeedingUp/Parallel.png)
@@ -69,11 +69,11 @@ This achieves a ready to work environment before the binaries are all downloaded
 
 ## How fast then?  
 
-Its complicated.  
+It's complicated.  
 
-I will discard mentioning the in-memory fk update buff from above. In pratical terms, if an entity would take 10 seconds to fetch and 10 seconds to migrate, it now takes 10 seconds to fetch and around 1-2s to migrate and that's what we are rolling with. There's more to it, but these gains will already be assumed for what follows.
+Let's discard the in-memory fk update buff from above. In practical terms, if an entity would take 10 seconds to fetch and 10 seconds to migrate, it now takes 10 seconds to fetch and around 1-2s to migrate and that's what we are rolling with. There's more to it, but these gains will already be assumed for what follows.
 
-I will also discard the binary scenarios. These will be migrated aside like previously mentioned, so these gains are also assumed.
+Let's also discard the binary scenarios. These will be migrated aside like previously mentioned, so these gains are also assumed.
 
 ### Example 1
 
@@ -82,29 +82,31 @@ I will also discard the binary scenarios. These will be migrated aside like prev
 In a sequential fashion, this migration takes 50 seconds.  
 In parallel with 5 available LBTs, it would take around 10 seconds.  
 
-### Lets switch things up a bit. Same 5 entities, now one has 900K records and this one takes 50s. The other 4, 10k and they take 1s
+### Example 2
 
 ![example2](../images/SynciTSpeedingUp/example2.jpg)  
 
-Sequential - 54s, Parallel - 50s  
-Pfff, not much to be said here, its easy to see why these values are so close.  
+Let's switch things up a bit. Same 5 entities, now one has 900K records and this one takes 50s. The other 4, 10k and they take 1s
 
-### Here's another one
+Sequential - 54s, Parallel - 50s  
+Pfff, not much to be said here, it's easy to see why these values are so close.  
+
+### Example 3
 
 ![example3](../images/SynciTSpeedingUp/example3.jpg)  
 
-Sequential will be equal to Parallel
+Sequential will be equal to Parallel - this shows the relation between sparse and vertical data models and its effect on using parallelism.
 
 ### Other considerations  
 
-The are metal considerations as well. How much ram do the servers have? How many LBPTs are available/feasable to use? Is the Server healthy? All of this needs to be taken into account.  
+The are metal considerations as well. How much ram do the fe-servers have? The db server? How many LBPTs are available/feasible to use? Is the Server healthy? All of this needs to be taken into account.  
 
-All and all, for any given random migration I am expecting average speed gains in the 2 to 5x magnitude.
+All and all, for any given random migration we are expecting average speed gains of at least 2 to 5x order.
 
 -----
 
 ## Wrap up  
 
-Here's an ancient complex technique that I use to draw some inspiration for some of this stuff - it involves a pencil, paper and liquids.  
+Here's an ancient technique that I use to map and organize some of this stuff - it involves a pencil, paper and liquids.  
   
 ![technique](../images/SynciTSpeedingUp/technique.jpg)
