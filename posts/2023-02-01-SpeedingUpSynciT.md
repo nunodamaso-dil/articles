@@ -2,7 +2,7 @@
 
 *SynciT is an application data migration tool for Outsystems environments*  
 
-Since the first conversations I had with the SynciT Team, parallelism was in the air.  
+Since the first conversations I had with the SynciT Team, parallelism was a hot topic.  
 How fast would it be?  Could we come up with a stable model to predict the migration order? Did Outsystems provide enough parallel mechanisms to pull it off?  
 Binaries were also a pain during long migrations, taking a long time to transfer and not really moving towards the goal of having referential data properly migrated.
 Then there was also the heart of SynciT engine - updating and matching all the migrated auto number foreign keys - often the culprit of timeouts and slow migrations.  
@@ -77,23 +77,23 @@ Let's also discard the binary scenarios. These will be migrated aside like previ
 
 ### Example 1
 
-![example1](../images/SynciTSpeedingUp/example1.jpg)  
+![example1](../images/SynciTSpeedingUp/ex1.png)  
 
 In a sequential fashion, this migration takes 50 seconds.  
-In parallel with 5 available LBTs, it would take around 10 seconds.  
+In parallel with 5 available LBTs, it takes around 10 seconds.  
 
 ### Example 2
 
-![example2](../images/SynciTSpeedingUp/example2.jpg)  
+![example2](../images/SynciTSpeedingUp/ex2.png)  
 
 Let's switch things up a bit. Same 5 entities, now one has 900K records and this one takes 50s. The other 4, 10k and they take 1s
 
 Sequential - 54s, Parallel - 50s  
-Pfff, not much to be said here, it's easy to see why these values are so close.  
+Pfff, not much to be said here, it's easy to see why these values are so close - the big one takes most of the time.
 
 ### Example 3
 
-![example3](../images/SynciTSpeedingUp/example3.jpg)  
+![example3](../images/SynciTSpeedingUp/ex3.png)  
 
 Sequential will be equal to Parallel - this shows the relation between sparse and vertical data models and its effect on using parallelism.
 
@@ -108,5 +108,6 @@ All and all, for any given random migration we are expecting average speed gains
 ## Wrap up  
 
 Here's an ancient technique that I use to map and organize some of this stuff - it involves a pencil, paper and liquids.  
+Feel free to reach out if you want to know more about any of these topics!
   
 ![technique](../images/SynciTSpeedingUp/technique.jpg)
