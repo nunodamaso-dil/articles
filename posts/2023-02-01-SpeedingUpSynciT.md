@@ -21,7 +21,7 @@ What this achieves in practical terms is that on one hand you have your work sim
 
 ### Matrices  
 
-An also noticeable aspect is that we can also represent Graphs through matrices (yeah yeah, those ones):
+Another noticeable aspect is that we can also represent Graphs through matrices (yeah yeah, those ones):
 ![Matrice](../images/SynciTSpeedingUp/Matrice.jpg)
 How cool is that? We end up with a simple 2D array to store our entire relational model. Horizontally we can check which entities an entity points to, while Vertically what entities are pointing to a particular one.  
 It is also possible to quickly identify entity silos - see the yellow boxes.  
@@ -36,7 +36,7 @@ While the cost to *compute* these matrices will be higher than the depth first a
 ### Light BPTs
 
 Outsystems had launched Light BPTs when I joined the SynciT team. While normal BPTs would technically do the job, the speed gains would be marginal, since keeping history records, callbacks, scheduling, process table entries, direct launches, etc.. slows down the entire thing.  
-Light BPTs are the perfect mechanism but with a catch. A 3 minutes one. You see, fetching data alone for a single batch of records of a single entity can often take as much as 2minutes or more, based on server latency, columns, attribute sizes, and more, nevermind the remainder of the process of updating fks and inserting the records.
+Light BPTs are the perfect mechanism but with a catch. A 3-minute one. You see, fetching data alone for a single batch of records of a single entity can often take as much as 2 minutes or more, based on server latency, columns, attribute sizes, and more, nevermind the remainder of the process of updating fks and inserting the records.
 Here's how we setup the parallel migration logic (overly simplified):  
 ![Parallel](../images/SynciTSpeedingUp/Parallel.png)
 
@@ -52,18 +52,18 @@ After that, whenever an entity needs to reference a fk, it fetches the new FK Id
 
 The opportunity to improve here, comes from the matching flow - SynciT used an approach often mentioned in Outsystems forums and blogs, of creating temporary tables to update incoming entity fk records.  
 While there's nothing wrong with that, it implies a lot of disk reads and writes because temporary tables are tables after all.  
-Furthermore, Oracle's Outsystems user has no permissions to create temporary tables, so that was a no no anyways for Oracle.  
+Furthermore, Oracle's Outsystems user has no permissions to create temporary tables, so that was already a no no for Oracle.  
 
 ![InMem](../images/SynciTSpeedingUp/InMem.jpg)
 
-Moving the whole thing to memory involved some caching and taking advantage of Outsystems extensions singleton patterns, but the results factor on an observable 10x faster fk updates and above. It can actually be a lot more than that, a disk read/write vs memory factors in the 1000x.
+Moving the whole thing to memory involved some caching and taking advantage of Outsystems extensions singleton patterns, but the results show an observable 10x faster fk updates and above. It can actually be a lot more than that, a disk read/write vs memory factors in the 1000x.
 
 -----
 
 ## Setting binaries aside
 
 The idea here was pretty simple. Binary files are required to transfer for a completed migration but not required for working data. So we simply moved the binary files to a parallel timer to deal with those, while the main entity migration deals with data and referential integrity.  
-This achieves a ready to work environment before the binaries are all downloaded, speeding up the goal. Once the main entity migration finishes, Users can start working while the binaries are downloading even.
+This achieves a ready to work environment before the binaries are all downloaded, speeding up the goal. Once the main entity migration finishes, users can start working while the binaries are still downloading.
 
 -----
 
@@ -71,9 +71,9 @@ This achieves a ready to work environment before the binaries are all downloaded
 
 It's complicated.  
 
-Let's discard the in-memory fk update buff from above. In practical terms, if an entity would take 10 seconds to fetch and 10 seconds to migrate, it now takes 10 seconds to fetch and around 1-2s to migrate and that's what we are rolling with. There's more to it, but these gains will already be assumed for what follows.
+Let's discard the in-memory fk update buff from above. In practical terms, if an entity would take 10 seconds to fetch and 10 seconds to migrate, it now takes 10 seconds to fetch and around 1-2 seconds to migrate and that's what we are rolling with. There's more to it, but these gains will already be assumed for what follows.
 
-Let's also discard the binary scenarios. These will be migrated aside like previously mentioned, so these gains are also assumed.
+Let's also discard the binary scenarios. These will be migrated aside as previously mentioned, so these gains are also assumed.
 
 ### Example 1
 
@@ -86,9 +86,9 @@ In parallel with 5 available LBTs, it takes around 10 seconds.
 
 ![example2](../images/SynciTSpeedingUp/ex2.png)  
 
-Let's switch things up a bit. Same 5 entities, now one has 900K records and this one takes 50s. The other 4, 10k and they take 1s
+Let's switch things up a bit. With the same 5 entities, now one has 900k records and this one takes 50 seconds. The other 4, 10k and they take 1 second.
 
-Sequential - 54s, Parallel - 50s  
+Sequential - 54 seconds, Parallel - 50 seconds  
 Pfff, not much to be said here, it's easy to see why these values are so close - the big one takes most of the time.
 
 ### Example 3
@@ -101,13 +101,13 @@ Sequential will be equal to Parallel - this shows the relation between sparse an
 
 The are metal considerations as well. How much ram do the fe-servers have? The db server? How many LBPTs are available/feasible to use? Is the Server healthy? All of this needs to be taken into account.  
 
-All and all, for any given random migration we are expecting average speed gains of at least 2 to 5x order.
+All and all, for any given random migration we are expecting average speed gains in order of at least 2 to 5x.
 
 -----
 
 ## Wrap up  
 
-Here's an ancient technique that I use to map and organize some of this stuff - it involves a pencil, paper and liquids.  
+Here's an age-old technique that I use to map and organize some of this stuff - it involves a pencil, paper and liquids.  
 Feel free to reach out if you want to know more about any of these topics!
   
 ![technique](../images/SynciTSpeedingUp/technique.jpg)
