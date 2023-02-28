@@ -1,9 +1,9 @@
 # On Speeding up SynciT
 
-*SynciT is an application data migration tool for Outsystems environments*  
+*SynciT is an application data migration tool for OutSystems environments*  
 
 Since the first conversations I had with the SynciT Team, parallelism was a hot topic.  
-How fast would it be?  Could we come up with a stable model to predict the migration order? Did Outsystems provide enough parallel mechanisms to pull it off?  
+How fast would it be?  Could we come up with a stable model to predict the migration order? Did OutSystems provide enough parallel mechanisms to pull it off?  
 Binaries were also a pain during long migrations, taking a long time to transfer and not really moving towards the goal of having referential data properly migrated.
 Then there was also the heart of SynciT engine - updating and matching all the migrated auto number foreign keys - often the culprit of timeouts and slow migrations.  
 All these topics needed to be addressed to speed up SynciT.
@@ -35,7 +35,7 @@ While the cost to *compute* these matrices will be higher than the depth first a
 
 ### Light BPTs
 
-Outsystems had launched Light BPTs when I joined the SynciT team. While normal BPTs would technically do the job, the speed gains would be marginal, since keeping history records, callbacks, scheduling, process table entries, direct launches, etc.. slows down the entire thing.  
+OutSystems had launched Light BPTs when I joined the SynciT team. While normal BPTs would technically do the job, the speed gains would be marginal, since keeping history records, callbacks, scheduling, process table entries, direct launches, etc.. slows down the entire thing.  
 Light BPTs are the perfect mechanism but with a catch. A 3-minute one. You see, fetching data alone for a single batch of records of a single entity can often take as much as 2 minutes or more, based on server latency, columns, attribute sizes, and more, nevermind the remainder of the process of updating fks and inserting the records.
 Here's how we setup the parallel migration logic (overly simplified):  
 ![Parallel](../images/SynciTSpeedingUp/Parallel.png)
@@ -50,13 +50,13 @@ After that, the processes themselves are responsible to re-launch the migration 
 SynciT's approach to match auto-numbers between 2 environments is a simple one - insert records, retrieve the ids, store them in a mapping table to map with those from source.
 After that, whenever an entity needs to reference a fk, it fetches the new FK Id from said mapping table.
 
-The opportunity to improve here, comes from the matching flow - SynciT used an approach often mentioned in Outsystems forums and blogs, of creating temporary tables to update incoming entity fk records.  
+The opportunity to improve here, comes from the matching flow - SynciT used an approach often mentioned in OutSystems forums and blogs, of creating temporary tables to update incoming entity fk records.  
 While there's nothing wrong with that, it implies a lot of disk reads and writes because temporary tables are tables after all.  
-Furthermore, Oracle's Outsystems user has no permissions to create temporary tables, so that was already a no no for Oracle.  
+Furthermore, Oracle's OutSystems user has no permissions to create temporary tables, so that was already a no no for Oracle.  
 
 ![InMem](../images/SynciTSpeedingUp/InMem.jpg)
 
-Moving the whole thing to memory involved some caching and taking advantage of Outsystems extensions singleton patterns, but the results show an observable 10x faster fk updates and above. It can actually be a lot more than that, a disk read/write vs memory factors in the 1000x.
+Moving the whole thing to memory involved some caching and taking advantage of OutSystems extensions singleton patterns, but the results show an observable 10x faster fk updates and above. It can actually be a lot more than that, a disk read/write vs memory factors in the 1000x.
 
 -----
 
